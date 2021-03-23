@@ -1,7 +1,6 @@
 import unittest
 
 from src.modules.kit.impl.equal import KNNEqualSciKit
-from src.modules.utilities.display.impl import DisplayKNN
 from src.modules.utilities.learning.impl.equal import LearningKNNEqual
 from src.modules.utilities.model.impl.equal import ModelEqualKNN
 
@@ -32,7 +31,7 @@ class LearningKNNEqualTestCase(unittest.TestCase):
 
 class DisplayKNNEqualTestCase(unittest.TestCase):
     def test_display_knn_equal_5_neighbours_1000_examples(self) -> None:
-        pipeline = ModelEqualKNN(KNNEqualSciKit, 5, 1000, 8)
+        pipeline = ModelEqualKNN(KNNEqualSciKit, 5, 1000, 12)
         x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
         x_train, x_test = pipeline.prepare_model(x_train, x_test, y_train)
         pipeline.build_map(x_train, y_train, 'Training Set')
