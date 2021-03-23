@@ -49,14 +49,14 @@ class RandomPointDatasetGenerator:
     Using probability.
     """
     @staticmethod
-    def __classifier(point: Point, probabilities=(.85, .05, .05, .05)):
-        point_class = abs((point[0] + point[1]) / 2) + 1
+    def __classifier(point: Point, probabilities=(1, .0, .0, .0)):
+        point_class = (abs(point[0]) + abs(point[1]) / 2)
 
         if point[0] > 0 and point[1] > 0:
             point_class *= probabilities[0] * 1 + probabilities[1] * 2 + probabilities[2] * 3 + probabilities[3] * 4
 
         if point[0] < 0 and point[1] > 0:
-            point_class *= probabilities[0] * 1 + probabilities[1] * 1 + probabilities[2] * 3 + probabilities[3] * 4
+            point_class *= probabilities[0] * 2 + probabilities[1] * 1 + probabilities[2] * 3 + probabilities[3] * 4
 
         if point[0] < 0 and point[1] < 0:
             point_class *= probabilities[0] * 3 + probabilities[1] * 1 + probabilities[2] * 2 + probabilities[3] * 4
@@ -64,7 +64,10 @@ class RandomPointDatasetGenerator:
         if point[0] > 0 and point[1] < 0:
             point_class *= probabilities[0] * 4 + probabilities[1] * 1 + probabilities[2] * 2 + probabilities[3] * 3
 
-        return floor(point_class)
+        if point_class < 1: return 1
+        if point_class > 4: return 4
+
+        return round(point_class)
 
     """
     Method for extracting the negative random list of values.
@@ -77,8 +80,8 @@ class RandomPointDatasetGenerator:
     Using numpy rand() for the purpose.
     """
     @staticmethod
-    def __rand_negative(low=-1, high=1):
-        return (high - low) * random.rand() + low
+    def __rand_negative():
+        return random.uniform(-1, 1)
 
 
 class RandomPointDatasetSplitter:
