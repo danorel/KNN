@@ -2,7 +2,7 @@ from src.modules.kit.equal import KNNSciKit
 from src.modules.kit.equal import KNNCustom
 from src.display import KNNDashboard
 from src.modules.dataset.generator.impl import RandomPointDatasetGenerator
-from src.modules.dataset.splitter import RandomPointDatasetSplitter
+from src.modules.dataset.splitter.impl import RandomPointDatasetSplitter
 from src.estimators import KNNEstimator
 
 
