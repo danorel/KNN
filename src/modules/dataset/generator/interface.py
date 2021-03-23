@@ -3,7 +3,7 @@ import abc
 
 class AbstractRandomValueGenerator(abc.ABC):
     @abc.abstractmethod
-    def rand(self, minimum=-1, maximum=1):
+    def rand(self):
         """
         Method for extracting the negative random value with settled minimum and maximum values.
         """
