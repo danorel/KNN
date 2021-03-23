@@ -10,12 +10,7 @@ class PointClassifier(AbstractPointClassifier):
         self.__probabilities = probabilities
 
     def commit(self, point: Point):
-        point_class = self.__decider(point)
-
-        if point_class < 1: return 1
-        if point_class > self.__classes: return self.__classes
-
-        return round(point_class)
+        return round(self.__decider(point))
 
     def __decider(self, point: Point) -> int:
         """
@@ -23,18 +18,25 @@ class PointClassifier(AbstractPointClassifier):
         Decides to which part belongs current point.
         :return:
         """
-        degree = 360. / self.__classes
-        length = round(degree)
+        shift_degrees = 360. / self.__classes
 
-        degree_prev = 0
-        degree_next = degree
+        # Calculation of the point degrees by it's tangent.
+        point_degrees = math.degrees(math.atan(math.fabs(point[1] / point[0])))
 
-        for _, index in enumerate(range(1, length)):
-            if ((0 < point[0] < math.cos(math.radians(degree_prev))) and
-               (0 < point[1] < math.sin(math.radians(degree_next)))):
+        # Case, when point belongs to the plane except first.
+        if -1 < point[0] < 0 and  0 < point[1] < 1: point_degrees = 180 - point_degrees
+        if -1 < point[0] < 0 and -1 < point[1] < 0: point_degrees += 180
+        if  0 < point[0] < 1 and -1 < point[1] < 0: point_degrees = 360 - point_degrees
+
+        # Variables meant for iteration inside the circle
+        prev_degrees = 0
+        next_degrees = shift_degrees
+
+        for _, index in enumerate(range(1, self.__classes + 1)):
+            if prev_degrees < point_degrees < next_degrees:
                 return index
 
-            degree_prev = degree_next
-            degree_next += degree
+            prev_degrees = next_degrees
+            next_degrees += shift_degrees
 
         return -1

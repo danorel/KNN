@@ -11,8 +11,12 @@ from src.modules.dataset.generator.interface import AbstractRandomListGenerator
 
 
 class RandomValueGenerator(AbstractRandomValueGenerator):
-    def rand(self, minimum=-1, maximum=1):
-        return random.uniform(minimum, maximum)
+    def __init__(self, minimum=-1, maximum=1):
+        self.__minimum = minimum
+        self.__maximum = maximum
+
+    def rand(self):
+        return random.uniform(self.__minimum, self.__maximum)
 
 
 class RandomListGenerator(AbstractRandomListGenerator):
