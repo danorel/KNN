@@ -1,4 +1,4 @@
-from src.modules.metrics.impl import KNNEstimator
+from src.modules.metrics.impl import EstimatorKNN
 from src.modules.kit.interface import AbstractKNN
 from src.modules.dataset.classifier.impl import PointClassifier
 from src.modules.dataset.generator.impl import RandomValueGenerator
@@ -41,12 +41,12 @@ class ModelEqualKNN(AbstractModelKNN):
         return self.__model.predict(x_test)
 
     def build_map(self, x, y, title) -> None:
-        DisplayKNN(self.__model, x, y, title).render_map()
+        DisplayKNN(self.__model, x, y, self.__classes, title).render_map()
         return None
 
     def build_graph(self, x, y, title) -> None:
-        DisplayKNN(self.__model, x, y, title).render_graph()
+        DisplayKNN(self.__model, x, y, self.__classes, title).render_graph()
         return None
 
     def estimate(self, x, y) -> float:
-        return KNNEstimator(self.__model).leave_one_out(x, y)
+        return EstimatorKNN(self.__model).confusion_matrix(x, y)
