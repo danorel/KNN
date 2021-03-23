@@ -1,12 +1,11 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 
-from src.modules.kit.knn import KNNAbstract
+from src.modules.kit.interface import AbstractKNN
 
 
-class KNNCustom(KNNAbstract):
+class KNNEqualCustom(AbstractKNN):
     def __init__(self, k: int):
-        super().__init__()
         self.__k = k
         self.__classifier = KNeighborsClassifier(n_neighbors=k)
 
@@ -29,9 +28,8 @@ class KNNCustom(KNNAbstract):
         return self.__k
 
 
-class KNNSciKit(KNNAbstract):
+class KNNEqualSciKit(AbstractKNN):
     def __init__(self, k: int):
-        super().__init__()
         self.__k: int = k
         self.__scaler: StandardScaler = StandardScaler()
         self.__classifier: KNeighborsClassifier = KNeighborsClassifier(n_neighbors=k)

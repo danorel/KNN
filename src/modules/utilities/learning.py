@@ -1,10 +1,9 @@
-from src.modules.kit.equal import KNNSciKit
-from src.modules.kit.equal import KNNCustom
-from src.modules.pipelines.configuration import LaunchKNNPipeline
+from src.modules.kit.interface import AbstractKNN
+from src.modules.utilities.configuration import KNNEqualPipeline
 
 
-class LearningKNNPipeline:
-    def __init__(self, Model: KNNCustom or KNNSciKit, size: int, max_k=20, ratio=.8):
+class LearningKNNEqualPipeline:
+    def __init__(self, model: AbstractKNN, size: int, classes: int, max_k=20, ratio=.8):
         """
         Launches the KNN Model.
         :return: None
@@ -12,15 +11,16 @@ class LearningKNNPipeline:
         self.__size: int = size
         self.__ratio: float = ratio
         self.__max_k: int = max_k
+        self.__classes: int = classes
         self.__dataset: list or None = None
-        self.__Model: KNNCustom or KNNSciKit = Model
+        self.__model: AbstractKNN = model
 
     def learn_model(self) -> int:
         max_k = 0
         max_precision = 0
 
-        for k in range(1, self.__max_k):
-            pipeline: LaunchKNNPipeline = LaunchKNNPipeline(self.__Model, k, self.__size)
+        for k in range(1, self.__max_k + 1):
+            pipeline: KNNEqualPipeline = KNNEqualPipeline(self.__model, k, self.__size, self.__classes)
             x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
             precision = pipeline.estimate(x_train, y_train)
             print("Precision on neighbours", k, "equals:", precision)

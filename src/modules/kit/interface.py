@@ -1,7 +1,7 @@
 import abc
 
 
-class KNNAbstract(abc.ABC):
+class AbstractKNN(abc.ABC):
     @abc.abstractmethod
     def fit_scaler(self, x_train, y_train):
         pass
