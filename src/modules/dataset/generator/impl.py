@@ -40,7 +40,7 @@ class RandomPointDatasetGenerator(AbstractRandomDatasetGenerator):
 
         return training_set
 
-    def commit_classified(self, size: int, classes: int) -> ListPointClassified:
+    def commit_classified(self, size: int) -> ListPointClassified:
         training_set: ListPointClassified = []
 
         for point in zip(self.__generator.rand(size), self.__generator.rand(size)):  # type: Point

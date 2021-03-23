@@ -30,7 +30,7 @@ class AbstractRandomDatasetGenerator(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def commit_classified(self, size: int, classes: int):
+    def commit_classified(self, size: int):
         """
         Method for generating random points with class definitions.
         Generates 'size' points in format: ((x, y), class)
