@@ -1,33 +1,43 @@
 import unittest
 
 from src.modules.kit.impl.equal import KNNEqualSciKit
-from src.modules.utilities.learning import LearningKNNEqualPipeline
-from src.modules.utilities.configuration import KNNEqualPipeline
+from src.modules.utilities.display.impl import DisplayKNN
+from src.modules.utilities.learning.impl.equal import LearningKNNEqual
+from src.modules.utilities.model.impl.equal import ModelEqualKNN
 
 
-class KitKNNExampleTest(unittest.TestCase):
+class KNNEqualModelTestCase(unittest.TestCase):
     def test_knn_5_neighbours_1000_examples(self) -> None:
-        pipeline = KNNEqualPipeline(KNNEqualSciKit, 5, 1000, 8)
+        pipeline = ModelEqualKNN(KNNEqualSciKit, 5, 1000, 8)
         x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
         self.assertAlmostEqual(pipeline.estimate(x_train, y_train), .8, delta=.1)
         return None
 
 
-class KitKNNLearningTest(unittest.TestCase):
-    def test_learning_model_100_examples(self):
-        learning = LearningKNNEqualPipeline(KNNEqualSciKit, 100, 12, 5)
-        best_k = learning.learn_model()
-        self.assertAlmostEqual(best_k, 1, delta=5)
+class LearningKNNEqualTestCase(unittest.TestCase):
+    def test_learning_model_100_examples(self) -> None:
+        learning = LearningKNNEqual(KNNEqualSciKit, 100, 12, 5)
+        self.assertAlmostEqual(learning.learn_model(), 1, delta=5)
 
-    def test_learning_model_1000_examples(self):
-        learning = LearningKNNEqualPipeline(KNNEqualSciKit, 1000, 12, 5)
-        best_k = learning.learn_model()
-        self.assertAlmostEqual(best_k, 1, delta=5)
+    def test_learning_model_1000_examples(self) -> None:
+        learning = LearningKNNEqual(KNNEqualSciKit, 1000, 12, 5)
+        self.assertAlmostEqual(learning.learn_model(), 1, delta=5)
+        return None
 
-    def test_learning_model_2500_examples(self):
-        learning = LearningKNNEqualPipeline(KNNEqualSciKit, 2500, 12, 5)
-        best_k = learning.learn_model()
-        self.assertAlmostEqual(best_k, 1, delta=5)
+    def test_learning_model_2500_examples(self) -> None:
+        learning = LearningKNNEqual(KNNEqualSciKit, 2500, 12, 5)
+        self.assertAlmostEqual(learning.learn_model(), 1, delta=5)
+        return None
+
+
+class DisplayKNNEqualTestCase(unittest.TestCase):
+    def test_display_knn_equal_5_neighbours_1000_examples(self) -> None:
+        pipeline = ModelEqualKNN(KNNEqualSciKit, 5, 1000, 8)
+        x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
+        x_train, x_test = pipeline.prepare_model(x_train, x_test, y_train)
+        pipeline.build_map(x_train, y_train, 'Training Set')
+        self.assertTrue(True)
+        return None
 
 
 if __name__ == '__main__':
