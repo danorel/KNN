@@ -13,7 +13,7 @@ ListPoint = NewType('ListPoint', List[Point])
 ListPointClassified = NewType('ListPointClassified', List[Tuple[Point, int]])
 
 
-class RandomPointGenerator:
+class RandomPointDatasetGenerator:
     """
     Generate random floating point values
     """
@@ -35,7 +35,7 @@ class RandomPointGenerator:
     """
     Method for generating the classified random points
     """
-    def classify(self) -> ListPointClassified:
+    def commit_classified(self) -> ListPointClassified:
         training_set: ListPointClassified = []
 
         # Generate random numbers between 0-1
@@ -79,3 +79,22 @@ class RandomPointGenerator:
     @staticmethod
     def __rand_negative(low=-1, high=1):
         return (high - low) * random.rand() + low
+
+
+class RandomPointDatasetSplitter:
+    def __init__(self, dataset: ListPoint or ListPointClassified):
+        self.__dataset = dataset
+
+    def commit(self, ratio=.7):
+        x_train, x_test = [], []
+        y_train, y_test = [], []
+
+        for point in self.__dataset:
+            if random.rand() < ratio:
+                x_train.append(point[0])
+                y_train.append(point[1])
+            else:
+                x_test.append(point[0])
+                y_test.append(point[1])
+
+        return x_train, x_test, y_train, y_test
