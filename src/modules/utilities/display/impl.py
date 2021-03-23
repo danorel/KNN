@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.widgets import Slider
 
+from src.modules.kit.interface import AbstractKNN
+from src.modules.utilities.display.interface import AbstractDisplayKNN
 
-class KNNDashboard:
-    def __init__(self, classifier, x, y, title='Training set'):
-        self.__classifier = classifier
+
+class DisplayKNN(AbstractDisplayKNN):
+    def __init__(self, classifier: AbstractKNN, x, y, title='Training set'):
+        self.__classifier: AbstractKNN = classifier
         self.__title = title
         self.__l = None
         self.__fig = None
@@ -45,11 +48,11 @@ class KNNDashboard:
 
     def render_graph(self) -> None:
 
-        """
-        Inner method for update tracking
-        :return: None
-        """
         def update(val) -> None:
+            """
+            Inner method for update tracking
+            :return: None
+            """
             k = self.__slider_k.val
             size = self.__slider_size.val
             self.__l.set_ydata(self.__y)
