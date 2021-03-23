@@ -1,36 +1,9 @@
-from src.kit import KNNSciKit
-from src.kit import KNNCustom
+from src.modules.kit.equal import KNNSciKit
+from src.modules.kit.equal import KNNCustom
 from src.display import KNNDashboard
-from src.dataset import RandomPointDatasetGenerator
-from src.dataset import RandomPointDatasetSplitter
+from src.modules.dataset.generator.impl import RandomPointDatasetGenerator
+from src.modules.dataset.splitter import RandomPointDatasetSplitter
 from src.estimators import KNNEstimator
-
-
-class LearningKNNPipeline:
-    def __init__(self, Model: KNNCustom or KNNSciKit, size: int, ratio=.8):
-        """
-        Launches the KNN Model.
-        :return: None
-        """
-        self.__size: int = size
-        self.__ratio: float = ratio
-        self.__dataset: list or None = None
-        self.__Model: KNNCustom or KNNSciKit = Model
-
-    def learn_model(self) -> int:
-        max_k = 0
-        max_precision = 0
-
-        for k in range(1, 10):
-            pipeline: LaunchKNNPipeline = LaunchKNNPipeline(self.__Model, k, self.__size)
-            x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
-            precision = pipeline.estimate(x_train, y_train)
-            print("Precision on neighbours", k, "equals:", precision)
-            if precision > max_precision:
-                max_precision = precision
-                max_k = k
-
-        return max_k
 
 
 class LaunchKNNPipeline:
@@ -92,22 +65,3 @@ class LaunchKNNPipeline:
         :return: float
         """
         return KNNEstimator(self.__Model).leave_one_out(x, y)
-
-
-def launch() -> None:
-    pipeline = LaunchKNNPipeline(KNNSciKit, 5, 1000)
-    x_train, x_test, y_train, y_test = pipeline.prepare_dataset()
-    print("Precision with k neighbours:", pipeline.estimate(x_train, y_train))
-    return None
-
-
-def launch_learning() -> None:
-    learning = LearningKNNPipeline(KNNSciKit, 1000)
-    best_k = learning.learn_model()
-    print("Best k:", best_k)
-    return None
-
-
-if __name__ == '__main__':
-    launch()
-    launch_learning()
